@@ -4,6 +4,10 @@ A SimpleReactiveWifiBot is a wifibot which step is a sequence :
 -computeActuatorValues
 -commitActuatorValues
 
+Example
+bot := SimpleReactiveWifiBot bodyIp: #[192 168 0 130].
+bot forwardSpeed: 100; rotationSpeed: 20.
+1 to: 10 do: [bot step]
 "
 Class {
 	#name : #SimpleReactiveWifiBot,
@@ -14,6 +18,17 @@ Class {
 	],
 	#category : #'WifiBotST-Kernel'
 }
+
+{ #category : #example }
+SimpleReactiveWifiBot class >> goOneStepForward [
+	<example>
+	| bot |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 0 130].
+	bot 
+		forwardSpeed: 100; 
+		rotationSpeed: 20.	
+	bot step
+]
 
 { #category : #stepping }
 SimpleReactiveWifiBot >> computeActuatorValues [
