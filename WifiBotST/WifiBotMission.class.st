@@ -39,7 +39,7 @@ Class {
 		'steppingProcess',
 		'steppingDelay'
 	],
-	#category : #'WifiBotST-Legacy-Kernel'
+	#category : #'WifiBotST-Kernel'
 }
 
 { #category : #'instance creation' }
@@ -53,6 +53,18 @@ WifiBotMission class >> bot: aWifiBot [
 WifiBotMission class >> bots: collectionOfBots [ 
 	^ self new bots: collectionOfBots;
 		 yourself
+]
+
+{ #category : #examples }
+WifiBotMission class >> singleBot130Ethernet5SecondsMission [
+	<example>
+	| bot mission |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 0 130].
+	bot forwardSpeed: 10;
+		rotationSpeed: 0.	
+	mission := self bot: bot.
+	[mission start.
+	5 seconds wait] ensure: [mission stop.]
 ]
 
 { #category : #accessing }

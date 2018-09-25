@@ -1,7 +1,7 @@
 Class {
 	#name : #RealWifiBotBodyTest,
 	#superclass : #AbstractWifiBotBodyTest,
-	#category : #'WifiBotST-Legacy-Kernel-Test'
+	#category : #'WifiBotST-Kernel-Test'
 }
 
 { #category : #running }

@@ -20,13 +20,62 @@ Class {
 }
 
 { #category : #example }
-SimpleReactiveWifiBot class >> goOneStepForward [
+SimpleReactiveWifiBot class >> startGoForward130Ethernet [
 	<example>
 	| bot |
 	bot := SimpleReactiveWifiBot bodyIp: #[192 168 0 130].
-	bot 
-		forwardSpeed: 100; 
-		rotationSpeed: 20.	
+	bot forwardSpeed: 10;
+		rotationSpeed: 0.	
+	bot step
+]
+
+{ #category : #example }
+SimpleReactiveWifiBot class >> startGoForward132Wifi [
+	<example>
+	| bot |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 1 132].
+	bot forwardSpeed: 10;
+		rotationSpeed: 0.	
+	bot step
+]
+
+{ #category : #example }
+SimpleReactiveWifiBot class >> startRotateInPlace130Ethernet [
+	<example>
+	| bot |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 0 130].
+	bot forwardSpeed: 0;
+		rotationSpeed: 10.	
+	bot step
+]
+
+{ #category : #example }
+SimpleReactiveWifiBot class >> startRotateInPlace132Wifi [
+	<example>
+	| bot |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 1 132].
+	bot forwardSpeed: 0;
+		rotationSpeed: 10.	
+	bot step
+]
+
+{ #category : #example }
+SimpleReactiveWifiBot class >> stop130Ethernet [
+	<example>
+	| bot |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 0 130].
+	bot forwardSpeed: 0;
+		rotationSpeed: 0.	
+	bot step
+]
+
+{ #category : #example }
+SimpleReactiveWifiBot class >> stop132Wifi [
+	<example>
+	| bot |
+	bot := SimpleReactiveWifiBot bodyIp: #[192 168 1 132].
+	bot forwardSpeed: 0;
+		rotationSpeed: 0.	
 	bot step
 ]
 
