@@ -7,12 +7,18 @@
 
 ROS_DISTRO=kinetic
 
-INSTALLDIR="$HOME/PhaROS-bin"
-PHAROS_WORKSPACE_DIR="$HOME/PhaROS-ws"
-PHAROS_TOOL="$HOME/bin/pharos"
+CATKIN_PACKAGE_NAME=wifibot
 
-PHARO_VM="http://get.pharo.org/64/vm70"
-PHARO_IMAGE="http://get.pharo.org/64/70"
+INSTALLDIR=$(rospack find $CATKIN_PACKAGE_NAME)
+
+PHARO_RPACKAGE_NAME=WifibotPackage
+
+PHARO_VM_URL="http://get.pharo.org/64/vm70"
+PHARO_IMAGE_URL="http://get.pharo.org/64/70"
+
+PHARO_VM="$INSTALLDIR/vm/pharo --nodisplay "
+PHAROS_IMAGE="$INSTALLDIR/image/PhaROS.image"
+PHAROS_NODE_IMAGE="$INSTALLDIR/image/$CATKIN_PACKAGE_NAME.image"
 
 
 # Script specific ===================
@@ -30,7 +36,6 @@ PRINT() {
 }
 
 
-PRINT "Need work to be done ;-)" && exit -1
 
 
 #  try to use curl if possible
@@ -52,150 +57,70 @@ fi
 if [ ! -d $INSTALLDIR ]; then
 	mkdir $INSTALLDIR
 fi
+
+
+
 cd $INSTALLDIR
+
 
 # Pharo VM ==========================
 
-if [ ! -f $INSTALLDIR/pharo ]; then
-	PRINT "Downloading Pharo VM in $INSTALLDIR"
-	rm -fr $INSTALLDIR/pharo-vm $INSTALLDIR/pharo $INSTALLDIR/pharo-ui 2>/dev/null
-	$DOWNLOAD "$PHARO_VM" | bash
-	# curl http://get.pharo.org/vm50 | bash
+if [ ! -d "$INSTALLDIR/vm" ]; then
+	PRINT "Downloading Pharo VM in $INSTALLDIR/vm"
+	mkdir $INSTALLDIR/vm
+	cd $INSTALLDIR/vm
+	$DOWNLOAD "$PHARO_VM_URL" | bash
+	rm pharo pharo-ui
+	mv pharo-vm/* .
+	rmdir pharo-vm
+	cd ..
 else
-	PRINT "[ALREADY EXISTS] $INSTALLDIR/pharo"
+	PRINT "[ALREADY EXISTS] $INSTALLDIR/vm"
 fi
 
-# Mandatory packages for 64bits systems, ... =======================
+# image directory ================
 
-	
-function messageToInstallPackages()
-{
-	sudo dpkg --add-architecture i386 
-	sudo apt-get update 
-	sudo apt-get install ${PACKAGES_TO_INSTALL[@]}
-}
-
-PACKAGES_TO_INSTALL=("build-essential" "cmake")
-
-
-if [[ `uname -p` == 'x86_64' ]]; then 	# are we on a 64bits system?
-	
-	UBUNTU_VERSION=`lsb_release -r`
-	echo -e "\n${WHITE}Ubuntu ${UBUNTU_VERSION}"	
-	
-	if [[ ${UBUNTU_VERSION} == *"16.04"* ]]; then
-		PACKAGES_TO_INSTALL=("libx11-6:i386" "libgl1-mesa-glx:i386" "libfontconfig1:i386" "libssl1.0.0:i386")
-	else	
-		PACKAGES_TO_INSTALL=("lib32z1" "libasound2:i386" "libasound2-plugins:i386" "libssl0.9.8:i386" "libgl1-mesa-glx:i386" "libfreetype6:i386" "ia32-libs")
-	fi	
-		
-	## Run the run_install function if any of the libraries are missing
-	dpkg -s "${PACKAGES_TO_INSTALL[@]}" >/dev/null 2>&1 || messageToInstallPackages
+if [ ! -d "$INSTALLDIR/image" ]; then
+	mkdir "$INSTALLDIR/image"
 fi
 
-# Pharo.image =======================
 
-if [ ! -f $INSTALLDIR/Pharostable.image ]; then
-	PRINT "Downloading $INSTALLDIR/Pharo.image"
-	rm -f $INSTALLDIR/Pharo.changes 2>/dev/null
-	$DOWNLOAD "$PHARO_IMAGE" | bash 
-	$INSTALLDIR/pharo Pharo.image save Pharostable --delete-old
-else
-	PRINT "[ALREADY EXISTS] $INSTALLDIR/Pharo.image"
+# PhaROS.image =======================
+
+if [ -f $PHAROS_NODE_IMAGE ]; then
+	PRINT "[ALREADY EXISTS] $PHAROS_NODE_IMAGE"
+	exit
 fi
 
-# pharos.image ======================
-
-if [ ! -f $INSTALLDIR/pharos.image ]; then
-
-	rm -f $INSTALLDIR/pharos.changes 2>/dev/null
+cd "$INSTALLDIR/image"	
 	
-	PRINT "Create $INSTALLDIR/pharos.image"
-	$INSTALLDIR/pharo Pharostable.image save pharos
-
+if [ ! -f $PHAROS_IMAGE ]; then
+	PRINT "Downloading $PHARO_IMAGE_URL"
+	$DOWNLOAD "$PHARO_IMAGE_URL" | bash 
+	$PHARO_VM Pharo.image save PhaROS --delete-old	
+	
 	if [[ a$http_proxy != "a" ]]; then 
 		# get proxy info from environment variable http_proxy e.g. http://10.1.1.3:8080
 		PROXYSERVER=`echo $http_proxy | cut -d\/ -f3 | cut -d: -f1`
 		PROXYPORT=`echo $http_proxy | cut -d\/ -f3 | cut -d: -f2`
 		PRINT "Set HTTP proxy (${PROXYSERVER}:${PROXYPORT}) in $INSTALLDIR/pharos.image"
-		$INSTALLDIR/pharo pharos.image eval --save "NetworkSystemSettings useHTTPProxy: true; httpProxyServer: '${PROXYSERVER}'; httpProxyPort: ${PROXYPORT}."
+		$PHARO_VM PhaROS.image eval --save "NetworkSystemSettings useHTTPProxy: true; httpProxyServer: '${PROXYSERVER}'; httpProxyPort: ${PROXYPORT}."
 	fi
-
-	PRINT "Load PhaROSCommander in $INSTALLDIR/pharos.image"
-	$INSTALLDIR/pharo pharos.image config http://smalltalkhub.com/mc/CAR/PhaROS/main ConfigurationOfPhaROSCommander --install=stable
+		
+	PRINT "Load PhaROS in $PHAROS_IMAGE"
+	echo $PHARO_VM $PHAROS_IMAGE config http://smalltalkhub.com/mc/CAR/PhaROS/main ConfigurationOfPhaROS --install=bleedingEdge
 fi
-
-# pharos command ====================
-
-PHAROS_TOOL_DIR=`dirname $PHAROS_TOOL`
-if [ ! -d $PHAROS_TOOL_DIR ]; then
-	PRINT "Create $PHAROS_TOOL_DIR"
-	mkdir $PHAROS_TOOL_DIR
-fi
-
-if [ ! -f $PHAROS_TOOL ]; then
-	PRINT "Create $PHAROS_TOOL"
-	echo -e "#!/usr/bin/env bash\n#set -f #disable parameter expansion\n$INSTALLDIR/pharo $INSTALLDIR/pharos.image \$@\n" >$PHAROS_TOOL
-	chmod +x $PHAROS_TOOL
 	
-	# pharos-ui 
-	PRINT "Create ${PHAROS_TOOL}-ui"
-	echo -e "#!/usr/bin/env bash\n#set -f #disable parameter expansion\n$INSTALLDIR/pharo-ui $INSTALLDIR/pharos.image \$@\n" >"$PHAROS_TOOL-ui"
-	chmod +x "$PHAROS_TOOL-ui"
+# The Pharo image for this catkin package ======================
+
+PRINT "Need work to be done ;-) because of TaskIT branch in MC" && exit -1
+
+
+if [ ! -f $PHAROS_NODE_IMAGE ]; then
+
+	PRINT "Create $PHAROS_NODE_IMAGE"
+	$PHARO_VM $PHAROS_IMAGE save $CATKIN_PACKAGE_NAME 
+	$PHARO_VM $PHAROS_NODE_IMAGE eval --save "Author fullName: 'pharos'. #PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage. #$PHARO_RPACKAGE_NAME asClass  removeFromSystem. (RPackage named: '$PHARO_RPACKAGE_NAME') unregister.  '$INSTALLDIR/Pharo/$PHARO_RPACKAGE_NAME.st' asFileReference fileIn " 
+
 fi
 
-# uninstall script for PhaROS
-PHAROS_TOOL_UNINSTALL_SCRIPT="$INSTALLDIR/pharos_uninstall"
-PRINT "Create ${PHAROS_TOOL}_uninstall"
-cat <<END > $PHAROS_TOOL_UNINSTALL_SCRIPT
-#!/usr/bin/env bash
-grep -iv pharos $HOME/.bashrc > $INSTALLDIR/.bashrc
-cp -f $INSTALLDIR/.bashrc $HOME/.bashrc
-rm -fr $INSTALLDIR $PHAROS_WORKSPACE_DIR $PHAROS_TOOL ${PHAROS_TOOL}-ui
-END
-
-chmod +x $PHAROS_TOOL_UNINSTALL_SCRIPT
-
-# ensures that $HOME/bin is in PATH	or already added in ~/.bashrc
-if [[ "$PATH" != *"$PHAROS_TOOL_DIR"* ]] && [[ `cat $HOME/.bashrc | grep $PHAROS_TOOL_DIR` == "" ]]; then 
-	echo -e "export PATH=\"$PHAROS_TOOL_DIR:\$PATH\"\n" >> $HOME/.bashrc
-fi
-
-# ensures ROS commands ==============
-
-MANDATORY_ROS_COMMANDS="catkin_init_workspace catkin_make"
-
-ROS_COMMAND_TO_INSTALL=""
-
-for roscommand in $MANDATORY_ROS_COMMANDS; do		
-	# if $roscommand not in PATH
-	if [[ `which $roscommand` == "" ]]; then
-			ROS_COMMAND_TO_INSTALL="$ROS_COMMAND_TO_INSTALL $roscommand"
-	fi	
-done
-
-if [[ $ROS_COMMAND_TO_INSTALL != "" ]]; then
-		PRINT "[ERROR] ROS is not correctly set up\nDoes your .bashrc contains:\t\tsource /opt/ros/${ROS_DISTRO}/setup.bash\n\n        Did you source it:\n\n\t\tsource ~/.bashrc\n"
-		exit 1
-fi
-
-# catkin workspace for PhaROS =======
-
-if [ ! -d $PHAROS_WORKSPACE_DIR ]; then
-	
-	PRINT "Create PhaROS catkin workspace ($PHAROS_WORKSPACE_DIR)"
-	
-	mkdir -p $PHAROS_WORKSPACE_DIR/src
-	cd $PHAROS_WORKSPACE_DIR/src
-	catkin_init_workspace
-	
-	cd $PHAROS_WORKSPACE_DIR
-	catkin_make
-
-	# ensure that PhaROS packages will be found by rosrun
-	echo -e "\n# for pharos catkin workspace\n[ -f $PHAROS_WORKSPACE_DIR/devel/setup.sh ] && source $PHAROS_WORKSPACE_DIR/devel/setup.sh --extend\n" >> $HOME/.bashrc
-fi
-
-# END ===============================
-. $HOME/.bashrc
-pharos --help
