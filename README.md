@@ -1,14 +1,15 @@
 # Catkin package for WifiBot robots
 
 
-## Installation
-		
+## Cloning 
+
 		cd <catkin_dir>/src
 		git clone https://github.com/CARMinesDouai/wifibot.git
 		cd wifibot
-		./install/installInPhaROS5.sh
 
-		rosrun wifibot edit
+## Install		
+		./install/installInPhaROS5.sh   # Installation in Pharo5 32bits
+		./install/installInPhaROS7.sh   # Installation in Pharo7 64bits
 
 # Usage
 		
@@ -27,5 +28,3 @@
 
 
 				
-
-
