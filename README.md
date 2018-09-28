@@ -11,7 +11,7 @@
 		./install/installInPhaROS5.sh   # Installation in Pharo5 32bits
 		./install/installInPhaROS7.sh   # Installation in Pharo7 64bits
 
-# Usage
+## Usage
 		
 		roscore
 
