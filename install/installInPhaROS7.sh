@@ -120,7 +120,7 @@ if [ ! -f $PHAROS_NODE_IMAGE ]; then
 
 	PRINT "Create $PHAROS_NODE_IMAGE"
 	$PHARO_VM $PHAROS_IMAGE save $CATKIN_PACKAGE_NAME 
-	$PHARO_VM $PHAROS_NODE_IMAGE eval --save "Author fullName: 'pharos'. #PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage. #$PHARO_RPACKAGE_NAME asClass  removeFromSystem. (RPackage named: '$PHARO_RPACKAGE_NAME') unregister.  '$INSTALLDIR/Pharo/WifiBotST-Legacy.st' asFileReference fileIn. '$INSTALLDIR/Pharo/WifiBotST.st' asFileReference fileIn. '$INSTALLDIR/Pharo/$PHARO_RPACKAGE_NAME.st' asFileReference fileIn " 
+	$PHARO_VM $PHAROS_NODE_IMAGE eval --save "Author fullName: 'pharos'. #PhaROSCatkinDeployer asClass setupImageForCurrentCatkinPackage. #$PHARO_RPACKAGE_NAME asClass  removeFromSystem. (RPackage named: '$PHARO_RPACKAGE_NAME') unregister. Metacello new baseline: 'WifiBotST'; repository: 'gitlocal://../Pharo/'; load . '$INSTALLDIR/Pharo/$PHARO_RPACKAGE_NAME.st' asFileReference fileIn " 
 
 fi
 
