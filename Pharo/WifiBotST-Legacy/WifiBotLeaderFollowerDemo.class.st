@@ -95,7 +95,7 @@ WifiBotLeaderFollowerDemo >> show [
 			 }
 		do: 
 			[ :center :widthHeight | 
-			obstacle := RectangleMorph new.
+			obstacle := ObstacleMorph new.
 			obstacle color: Color black.
 			arena addMorph: obstacle.
 			obstacle center: center.

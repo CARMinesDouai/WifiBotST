@@ -33,15 +33,19 @@ ArenaWithLightBulbsTest >> testAddLightBulbAnswersTheNewlyCreatedBulb [
 { #category : #testing }
 ArenaWithLightBulbsTest >> testAdditionOfLightBulbs [
 	| greenBulb redBulb |
-	arena position: 0@0.
+	arena position: 0 @ 0.
 	self assert: arena lightBulbs isEmpty.
-	greenBulb := arena addLightBulbAt: 100@100 color: Color green.
-	redBulb := arena addLightBulbAt: 200@200 color: Color red.
-	self assert: arena lightBulbs = {greenBulb. redBulb} asSet.
-	self assert:  greenBulb center = (100@100). 
-	self assert:  redBulb center = (200@200). 
-	self assert: (arena submorphs includesAllOf: arena lightBulbs)
-
+	greenBulb := arena addLightBulbAt: 100 @ 100 color: Color green.
+	redBulb := arena addLightBulbAt: 200 @ 200 color: Color red.
+	self
+		assert:
+			arena lightBulbs
+				=
+					{greenBulb.
+					redBulb} asSet.
+	self assert: greenBulb center = (100 @ 100).
+	self assert: redBulb center = (200 @ 200).
+	self assert: (arena submorphs includesAll: arena lightBulbs)
 ]
 
 { #category : #testing }

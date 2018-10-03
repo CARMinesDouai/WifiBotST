@@ -18,7 +18,7 @@ MazeWalkerWifiBot class >> example [
 	arena mission: mission.
 	arena openInWorld.
 	bot body openIn: arena.
-	arena addMorph: RectangleMorph new.
+	arena addMorph: ObstacleMorph new.
 	arena openInWorld.
 	^ mission
 ]

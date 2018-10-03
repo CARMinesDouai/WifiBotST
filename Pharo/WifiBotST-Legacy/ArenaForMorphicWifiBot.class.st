@@ -102,7 +102,7 @@ ArenaForMorphicWifiBot >> addMorph: aMorph [
 ArenaForMorphicWifiBot >> addObstacleAt: aPoint width: width height:  height [
 	|obstacle offset|
 	offset := self positionInWorld.
-	obstacle := RectangleMorph new.
+	obstacle := ObstacleMorph new.
 	self addMorph: obstacle.
 	^obstacle 
 		color: Color black;
@@ -156,11 +156,11 @@ ArenaForMorphicWifiBot >> close [
 
 { #category : #initialization }
 ArenaForMorphicWifiBot >> createBorders [
-	self topBorder: RectangleMorph new.
+	self topBorder: ObstacleMorph new.
 	self topBorder lock: true;
 		 height: 100.
 	self bottomBorder: self topBorder copy.
-	self leftBorder: RectangleMorph new.
+	self leftBorder: ObstacleMorph new.
 	self leftBorder lock: true;
 		 width: 100.
 	self rightBorder: self leftBorder copy.

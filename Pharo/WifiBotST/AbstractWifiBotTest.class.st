@@ -20,13 +20,13 @@ AbstractWifiBotTest >> setUp [
 	super setUp.
 	bot := self botClass morphic.
 	botBody := bot body.
-	arena := RectangleMorph new.
+	arena := ObstacleMorph new.
 	arena
 		color: Color yellow;
 		width: World width;
 		height: World height.
 	arena openInWorld.
-	obstacle := RectangleMorph new.
+	obstacle := ObstacleMorph new.
 	arena addMorph: obstacle.
 	botBody openIn: arena
 ]

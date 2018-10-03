@@ -26,13 +26,13 @@ MorphicWifiBotBodyTest >> openBotBodyInArena [
 { #category : #'setUp-tearDown' }
 MorphicWifiBotBodyTest >> setUp [
 	super setUp.
-	arena := RectangleMorph new.
+	arena := Morph new.
 	arena
 		color: Color yellow;
 		width: World width;
 		height: World height.
 	arena openInWorld.
-	obstacle := RectangleMorph new.
+	obstacle := ObstacleMorph new.
 	self openBotBodyInArena.
 	arena addMorph: obstacle
 ]
@@ -184,7 +184,7 @@ MorphicWifiBotBodyTest >> testPositionSensing [
 	| originPosition expectedRelativePositions theoriticalRelativePositions |
 	originPosition := 400 @ 400.
 	botBody positionInArena: originPosition.
-	self assert: botBody currentPositionRelativeToOrigin = (0 @ 0).
+	self assert: botBody currentPositionRelativeToOrigin equals: (0 @ 0).
 	theoriticalRelativePositions := {-50 @ 0. -50 @ 50. 0 @ 50. 0 @ 0}.
 	expectedRelativePositions := theoriticalRelativePositions
 				collect: [:position | 
@@ -193,7 +193,7 @@ MorphicWifiBotBodyTest >> testPositionSensing [
 					heading by -90"
 					botBody commitActuatorValues.
 					position + botBody positionInArena - originPosition].
-	self assert: botBody currentPositionRelativeToOrigin = (0 @ 0).
+	self assert: botBody currentPositionRelativeToOrigin equals: (0 @ 0).
 	expectedRelativePositions
 		do: [:position | 
 			botBody forwardSpeed: 0 rotationSpeed: -450.
@@ -201,7 +201,7 @@ MorphicWifiBotBodyTest >> testPositionSensing [
 			"A forward speed of value 250 leads to move by 50"
 			botBody forwardSpeed: 250 rotationSpeed: 0.
 			botBody commitActuatorValues.
-			self assert: botBody currentPositionRelativeToOrigin = position]
+			self assert: botBody currentPositionRelativeToOrigin equals: position]
 ]
 
 { #category : #running }

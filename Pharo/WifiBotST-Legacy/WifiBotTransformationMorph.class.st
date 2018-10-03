@@ -38,7 +38,7 @@ WifiBotTransformationMorph >> drawOn: aCanvas [
 	| r |
 	"display the bounds of the transfo morph"
 	self isBoundingBoxVisible ifTrue: [
-		r:= RectangleMorph roundRectPrototype.
+		r:= ObstacleMorph roundRectPrototype.
 		r position: self position.
 		r extent: (fullBounds width @ fullBounds height).
 		r drawOn: aCanvas.
