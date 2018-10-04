@@ -163,7 +163,7 @@ WifiBotMorph >> forwardSpeed: speed rotationSpeed: angleInDegrees [
 	self forwardSpeed: speed.
 	self rotationSpeed: angleInDegrees.
 	self heading: self heading + self getThenZeroRotationSpeed.
-	self positionInArena: self positionInArena + self getThenZeroSpeedVector
+	self positionInArena: self positionInArena - self getThenZeroSpeedVector
 ]
 
 { #category : #accessing }
@@ -342,8 +342,8 @@ WifiBotMorph >> speedRatio [
 { #category : #accessing }
 WifiBotMorph >> speedVector [
 	| headingRadians |
-	headingRadians := (self heading - 90) asFloat degreesToRadians.
-	^headingRadians cos @ headingRadians sin * self forwardSpeed
+	headingRadians := self heading degreesToRadians.
+	^(headingRadians sin @ headingRadians cos) * self forwardSpeed
 ]
 
 { #category : #'morphic menu' }

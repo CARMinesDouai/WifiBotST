@@ -152,17 +152,63 @@ MorphicWifiBotBodyTest >> testMaxWheelSpeedForMaxForwardSpeed [
 ]
 
 { #category : #running }
-MorphicWifiBotBodyTest >> testMoveForward [
+MorphicWifiBotBodyTest >> testMoveForwardAngle0 [
+	"Angle 0 = towards the top"
 	| currentPosition |
+	botBody heading: 0.
 	botBody forwardSpeed: 100 rotationSpeed: 0.
 	currentPosition := 200.0 @ 200.0.
 	botBody positionInArena: currentPosition.
 	10
 		timesRepeat: [botBody commitActuatorValues.
-			"By default the bot moves towards the top"
 			currentPosition := currentPosition - (0 @ 20).
 			Processor yield.
-			self assert: botBody positionInArena = currentPosition]
+			self assert: botBody positionInArena equals: currentPosition]
+]
+
+{ #category : #running }
+MorphicWifiBotBodyTest >> testMoveForwardAngle180 [
+	"Angle 0 = towards the top"
+	| currentPosition |
+	botBody heading: 180.
+	botBody forwardSpeed: 100 rotationSpeed: 0.
+	currentPosition := 200.0 @ 200.0.
+	botBody positionInArena: currentPosition.
+	10
+		timesRepeat: [botBody commitActuatorValues.
+			currentPosition := currentPosition + (0 @ 20).
+			Processor yield.
+			self assert: botBody positionInArena equals: currentPosition]
+]
+
+{ #category : #running }
+MorphicWifiBotBodyTest >> testMoveForwardAngle90 [
+	"Angle 0 = towards the top"
+	| currentPosition |
+	botBody heading: 90. "Towards the left"
+	botBody forwardSpeed: 100 rotationSpeed: 0.
+	currentPosition := 200.0 @ 200.0.
+	botBody positionInArena: currentPosition.
+	10
+		timesRepeat: [botBody commitActuatorValues.
+			currentPosition := currentPosition - (20 @ 0).
+			Processor yield.
+			self assert: (botBody positionInArena closeTo: currentPosition)]
+]
+
+{ #category : #running }
+MorphicWifiBotBodyTest >> testMoveForwardAngle90Negated [
+	"Angle 0 = towards the top"
+	| currentPosition |
+	botBody heading: -90. "Towards the right"
+	botBody forwardSpeed: 100 rotationSpeed: 0.
+	currentPosition := 200.0 @ 200.0.
+	botBody positionInArena: currentPosition.
+	10
+		timesRepeat: [botBody commitActuatorValues.
+			currentPosition := currentPosition + (20 @ 0).
+			Processor yield.
+			self assert: (botBody positionInArena closeTo: currentPosition)]
 ]
 
 { #category : #running }

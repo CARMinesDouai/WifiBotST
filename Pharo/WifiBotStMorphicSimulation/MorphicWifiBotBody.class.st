@@ -271,7 +271,7 @@ MorphicWifiBotBody >> rotationSpeed: newSpeed [
 
 { #category : #morphic }
 MorphicWifiBotBody >> scaleWithFactor: aFloat [
-	self morph owner scaleFactor: aFloat
+	self morph owner scale: aFloat
 ]
 
 { #category : #morphic }
