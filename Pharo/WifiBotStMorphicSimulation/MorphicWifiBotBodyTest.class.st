@@ -61,7 +61,7 @@ MorphicWifiBotBodyTest >> testCenter [
 	| expectedCenter |
 	expectedCenter := 100 @ 100.
 	botBody centerInArena: expectedCenter.
-	self assert: botBody centerInArena = expectedCenter
+	self assert: botBody centerInArena equals: expectedCenter
 ]
 
 { #category : #running }
@@ -72,7 +72,7 @@ MorphicWifiBotBodyTest >> testDoNotMoveIfBatteryEmpty [
 	botBody positionInArena: initialPosition.
 	botBody forwardSpeed: 10 rotationSpeed: 0.
 	10 timesRepeat: [botBody commitActuatorValues].
-	self assert: botBody positionInArena = initialPosition
+	self assert: botBody positionInArena equals: initialPosition
 ]
 
 { #category : #running }
@@ -88,6 +88,21 @@ MorphicWifiBotBodyTest >> testFarObstacleSensing [
 	obstacle position: obstacle position - (0 @ 1).
 	self assert: botBody distanceToLeftObstacles = 150.
 	self assert: botBody distanceToRightObstacles = 150
+]
+
+{ #category : #running }
+MorphicWifiBotBodyTest >> testHeading [
+	botBody heading: 30.
+	self assert: (botBody heading closeTo: 30).
+	botBody heading: 390.
+	self assert: (botBody heading closeTo: 30).
+	botBody heading: -30.
+	self assert: (botBody heading closeTo: 330).
+	botBody heading: -180.
+	self assert: (botBody heading closeTo: 180).
+	botBody heading: -390.
+	self assert: (botBody heading closeTo: 330).
+
 ]
 
 { #category : #running }

@@ -15,25 +15,34 @@ Class {
 		'botBody',
 		'positionInArena'
 	],
-	#classVars : [
-		'DefaultScaleFactor',
-		'WifiBotForm'
+	#classInstVars : [
+		'defaultImage'
 	],
-	#category : #'WifiBotStMorphicSimulation-Kernel GUI'
+	#category : #'WifiBotStMorphicSimulation-Kernel'
 }
 
 { #category : #initialization }
-WifiBotMorph class >> initialize [ 
-	WifiBotForm := self wifiBotFile binaryReadStreamDo: [ : str | ImageReadWriter formFromStream: str ]
-
+WifiBotMorph class >> defaultImage [
+	^defaultImage
 ]
 
 { #category : #initialization }
-WifiBotMorph class >> wifiBotFile [
+WifiBotMorph class >> defaultImageFile [
 	| iceRepository |
 	iceRepository := IceRepository registry detect:  [ :each | each includesPackageNamed: self package name].
 	^iceRepository location / 'Graphics' / 'wifiBot.png'
 
+]
+
+{ #category : #initialization }
+WifiBotMorph class >> initDefaultImage [
+	defaultImage := self defaultImageFile
+		binaryReadStreamDo: [ :str | ImageReadWriter formFromStream: str ]
+]
+
+{ #category : #initialization }
+WifiBotMorph class >> initialize [
+	self initDefaultImage
 ]
 
 { #category : #'initialize-release' }
@@ -120,7 +129,7 @@ WifiBotMorph >> centerInArena: aPoint [
 
 { #category : #'initialize-release' }
 WifiBotMorph >> defaultImage [
-	^WifiBotForm
+	^self class defaultImage
 ]
 
 { #category : #displaying }
@@ -189,7 +198,7 @@ WifiBotMorph >> heading [
 { #category : #geometry }
 WifiBotMorph >> heading: angleInDegrees [
 	self addFlexShellIfNecessary.
-	self owner angle: angleInDegrees degreesToRadians
+	self owner angle: (angleInDegrees % 360) degreesToRadians
 ]
 
 { #category : #'morphic menu' }

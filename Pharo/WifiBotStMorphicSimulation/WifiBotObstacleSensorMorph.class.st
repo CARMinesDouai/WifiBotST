@@ -1,7 +1,7 @@
 Class {
 	#name : #WifiBotObstacleSensorMorph,
 	#superclass : #Morph,
-	#category : #'WifiBotStMorphicSimulation-Kernel GUI'
+	#category : #'WifiBotStMorphicSimulation-Kernel'
 }
 
 { #category : #obstacleDetection }

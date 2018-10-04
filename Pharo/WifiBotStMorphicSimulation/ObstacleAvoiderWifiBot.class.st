@@ -38,11 +38,11 @@ ObstacleAvoiderWifiBot >> obstacleOnTheRight [
 
 { #category : #accessing }
 ObstacleAvoiderWifiBot >> rotationSpeedOnLeftObstacle [
-	^ (1 to: 359) atRandom
+	^self rotationSpeedOnRightObstacle negated
 
 ]
 
 { #category : #accessing }
 ObstacleAvoiderWifiBot >> rotationSpeedOnRightObstacle [
-	^ (-359 to: -1) atRandom
+	^ (1 to: 359) atRandom
 ]

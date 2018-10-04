@@ -17,7 +17,7 @@ Class {
 		'rightBorder',
 		'mission'
 	],
-	#category : #'WifiBotStMorphicSimulation-Kernel GUI'
+	#category : #'WifiBotStMorphicSimulation-Kernel'
 }
 
 { #category : #examples }

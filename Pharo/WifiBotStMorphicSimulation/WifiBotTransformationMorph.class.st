@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'isBoundingBoxVisible'
 	],
-	#category : #'WifiBotStMorphicSimulation-Kernel GUI'
+	#category : #'WifiBotStMorphicSimulation-Kernel'
 }
 
 { #category : #accessing }
