@@ -53,16 +53,16 @@ WifiBotSimulationTest >> testAdditionOfRobotGivenAnInstance [
 WifiBotSimulationTest >> testResetMovesRobotsToTheirInitialPositions [
 	| initialCenter bot |
 	scenario show.
-	bot := scenario addRobotInstanceOf: ObstacleAvoiderWifiBot  atPosition: 100@100.
+	initialCenter := 300@300.
+	bot := scenario addRobotInstanceOf: ObstacleAvoiderWifiBot  atPosition: 300@300.
 	bot forwardSpeed: 100.
-	initialCenter := bot body morph centerInArena.
-	self assert: initialCenter = (100@100).
+	self assert: bot body morph centerInArena equals: initialCenter.
 	scenario start.
 	(Delay forMilliseconds: 300) wait.
 	scenario stop.
-	self deny: bot body morph centerInArena = initialCenter.
+	self deny: bot body morph centerInArena equals: initialCenter.
 	scenario reset.
-	self assert: bot body morph centerInArena = initialCenter.
+	self assert: bot body morph centerInArena equals: initialCenter.
 	
 
 ]

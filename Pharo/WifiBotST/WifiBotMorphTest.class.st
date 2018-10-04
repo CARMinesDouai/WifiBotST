@@ -33,7 +33,7 @@ WifiBotMorphTest >> testSensorPositions [
 	self assert: leftSensorPosition x = botMorphPosition x.
 	self assert: leftSensorPosition y = sensorExpectedY.
 	rightSensorPosition := botMorph rightObstacleSensor positionInWorld.
-	self assert: rightSensorPosition x = (botMorphPosition x + (botMorph width / 2) + 1).
+	self assert: rightSensorPosition x = (botMorphPosition x + (botMorph width // 2) + 1).
 	self assert: rightSensorPosition y = sensorExpectedY
 ]
 
