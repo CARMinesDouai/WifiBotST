@@ -214,14 +214,13 @@ MorphicWifiBotBodyTest >> testMoveForwardAngle90Negated [
 { #category : #running }
 MorphicWifiBotBodyTest >> testMoveWhileTurningAt: rotationSpeed [ 
 	| originPosition currentHeading |
-	botBody forwardSpeed: 50 rotationSpeed: rotationSpeed * 5. "botBody morph speedRatio."
+	botBody forwardSpeed: 50 rotationSpeed: rotationSpeed * botBody morph speedRatio.
 	originPosition := 100 @ 100.
 	botBody positionInArena: originPosition.
 	currentHeading := 0 asFloat.
-	40
-		timesRepeat: [botBody commitActuatorValues.
+	40 timesRepeat: [botBody commitActuatorValues.
 			currentHeading := currentHeading + rotationSpeed.
-			self assert: (botBody heading - currentHeading) abs < (1 / 10)].
+			self assert: (botBody heading closeTo:  currentHeading % 360 )].
 	self assert: (botBody positionInArena x - originPosition x) abs <= 2.
 	self assert: (botBody positionInArena y - originPosition y) abs <= 2
 ]
@@ -249,15 +248,15 @@ MorphicWifiBotBodyTest >> testPositionSensing [
 	theoriticalRelativePositions := {-50 @ 0. -50 @ 50. 0 @ 50. 0 @ 0}.
 	expectedRelativePositions := theoriticalRelativePositions
 				collect: [:position | 
-					botBody forwardSpeed: 0 rotationSpeed: -450.
-					"A rotation speed of value -450 leads to changing the
-					heading by -90"
+					botBody forwardSpeed: 0 rotationSpeed: 450.
+					"A rotation speed of value 450 leads to changing the
+					heading by 90"
 					botBody commitActuatorValues.
 					position + botBody positionInArena - originPosition].
 	self assert: botBody currentPositionRelativeToOrigin equals: (0 @ 0).
 	expectedRelativePositions
 		do: [:position | 
-			botBody forwardSpeed: 0 rotationSpeed: -450.
+			botBody forwardSpeed: 0 rotationSpeed: 450.
 			botBody commitActuatorValues.
 			"A forward speed of value 250 leads to move by 50"
 			botBody forwardSpeed: 250 rotationSpeed: 0.
@@ -299,12 +298,12 @@ MorphicWifiBotBodyTest >> testTurnOnItself [
 
 { #category : #running }
 MorphicWifiBotBodyTest >> testTurnToLeft [
-	self testMoveWhileTurningAt: -90
+	self testMoveWhileTurningAt: 90
 ]
 
 { #category : #running }
 MorphicWifiBotBodyTest >> testTurnToRight [
-	self testMoveWhileTurningAt: 90
+	self testMoveWhileTurningAt: -90
 ]
 
 { #category : #running }

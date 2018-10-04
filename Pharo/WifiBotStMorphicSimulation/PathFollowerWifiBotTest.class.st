@@ -19,11 +19,11 @@ PathFollowerWifiBotTest >> setUp [
 ]
 
 { #category : #testing }
-PathFollowerWifiBotTest >> testTarget [
+PathFollowerWifiBotTest >> testTargetSelection [
 	| expectedTargets |
 	expectedTargets := bot pathPoints copyWith: bot pathPoints first.
 	expectedTargets do: [:currentTarget|
-		self assert: bot target = currentTarget.
+		self assert: bot target equals: currentTarget.
 		botBody centerInArena: bot target.
 		bot step]
 	

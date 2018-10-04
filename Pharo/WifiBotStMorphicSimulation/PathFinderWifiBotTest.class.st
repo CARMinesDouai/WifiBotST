@@ -24,6 +24,16 @@ PathFinderWifiBotTest >> botTarget: aPoint [
 	"obstacle position: aPoint"
 ]
 
+{ #category : #testing }
+PathFinderWifiBotTest >> moveForwardFrom: initialCenter towards: target heading: heading [
+	bot forwardSpeed: 100.
+	botBody heading: heading.
+	botBody centerInArena: initialCenter.
+	bot target: target.
+	bot step.
+
+]
+
 { #category : #'setUp-tearDown' }
 PathFinderWifiBotTest >> setUp [
 	super setUp.
@@ -41,6 +51,23 @@ PathFinderWifiBotTest >> testMoveForwardIfNoObstacle [
 	self assert: botBody positionInArena x = 300. 
 ]
 
+{ #category : #testing }
+PathFinderWifiBotTest >> testMoveForwardTowardFrontTarget [
+	self moveForwardFrom: 300@300 towards: 300@200 heading: 0.
+	self assert: botBody centerInArena x equals: 300.
+	self assert: botBody centerInArena y < 300.
+	self moveForwardFrom: 300@300 towards: 200@300 heading: 90.
+	self assert: botBody centerInArena x < 300.
+	self assert: botBody centerInArena y equals: 300.
+	self moveForwardFrom: 300@300 towards: 400@300 heading: -90.
+	self assert: botBody centerInArena x > 300.
+	self assert: botBody centerInArena y equals: 300.
+	self moveForwardFrom: 300@300 towards: 300@400 heading: 180.
+	self assert: botBody centerInArena x equals: 300.
+	self assert: botBody centerInArena y > 300.
+
+]
+
 { #category : #running }
 PathFinderWifiBotTest >> testRotationToLeftOnRightObstacle [
 	| obstacleX obstacleY initialHeading |
@@ -53,7 +80,7 @@ PathFinderWifiBotTest >> testRotationToLeftOnRightObstacle [
 	self assert: botBody distanceToLeftObstacles equals: 150.
 	self assert: botBody distanceToRightObstacles < bot minDistanceToIgnoreObstacles.
 	bot step.
-	self assert: botBody heading < initialHeading
+	self assert: botBody heading > initialHeading
 ]
 
 { #category : #running }
@@ -88,36 +115,41 @@ self run: #testStopIfTargetReached
 
 { #category : #running }
 PathFinderWifiBotTest >> testTurnTowardTargetNorthEast [
-	botBody heading: -11.
+	botBody heading: 11.
 	botBody positionInArena: 300 @ 300.
-	self botTarget: 200 @ 200.
+	self botTarget: 400 @ 200.
 	bot step.
-	self assert: (botBody heading + 45) abs <= 3
+	self assert: botBody heading > 270.
+	self assert: botBody heading < 360.
 ]
 
 { #category : #running }
 PathFinderWifiBotTest >> testTurnTowardTargetNorthWest [
-	botBody heading: 11.
+	botBody heading: -11.
 	botBody centerInArena: 300 @ 300.
-	self botTarget: 400 @ 200.
+	self botTarget: 200 @ 200.
 	bot step.
-	self assert: (botBody heading - 45) abs <= 3
+	self assert: botBody heading > 0.
+	self assert: botBody heading < 90.
 ]
 
 { #category : #running }
 PathFinderWifiBotTest >> testTurnTowardTargetSouthEast [
-	botBody heading: 11.
+	botBody heading: 101.
 	botBody centerInArena: 300 @ 300.
-	self botTarget: 200 @ 400.
+	self botTarget: 400 @ 400.
 	bot step.
-	self assert: (botBody heading + 135) abs <= 3
+	self assert: botBody heading < 270.
+	self assert: botBody heading > 180
 ]
 
 { #category : #running }
 PathFinderWifiBotTest >> testTurnTowardTargetSouthWest [
-	botBody heading: 11.
+	botBody heading: -11.
 	botBody centerInArena: 300 @ 300.
-	self botTarget: 400 @ 400.
+	self botTarget: 200 @ 400.
 	bot step.
-	self assert: (botBody heading - 135) abs <= 3
+	self assert: botBody heading > 90.
+	self assert: botBody heading < 180.
+	
 ]

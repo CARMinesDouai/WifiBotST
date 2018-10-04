@@ -68,7 +68,7 @@ LightSensingWifiBotBodyTest >> testSensorsKnowsArena [
 LightSensingWifiBotBodyTest >> testSensorsMoveWhenBodyMovesRightward [
 	| initialBodyPosition InitialLeftSensorPosition InitialRightSensorPosition |
 	initialBodyPosition :=  200 @ 200.
-	botBody heading: 90.
+	botBody heading: -90.
 	botBody positionInArena: initialBodyPosition.
 	InitialLeftSensorPosition := botBody leftLightSensor positionInWorld.
 	InitialRightSensorPosition := botBody rightLightSensor positionInWorld.

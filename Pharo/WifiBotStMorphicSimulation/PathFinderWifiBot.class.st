@@ -33,7 +33,7 @@ PathFinderWifiBot >> deltaAngleForHeadingTowardsTarget [
 	position := self body centerInArena.
 	dx := position x - self target x.
 	dy := position y - self target y.
-	angleAbs := (dx negated arcTan: dy) radiansToDegrees.
+	angleAbs := (dx arcTan: dy) radiansToDegrees.
 	^ angleAbs - self body heading
 ]
 

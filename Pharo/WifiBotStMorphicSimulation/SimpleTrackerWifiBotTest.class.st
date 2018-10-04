@@ -34,7 +34,8 @@ SimpleTrackerWifiBotTest >> testAlignOnRightObstacle [
 	self assert: botBody distanceToLeftObstacles > bot maxAcceptableDistanceToTarget.
 	self assert: botBody distanceToRightObstacles <= bot maxAcceptableDistanceToTarget.
 	bot step.
-	self assert: botBody morph heading - 45 <= 5.
+	self assert: botBody morph heading > 270.
+	self assert: botBody morph heading < 359.
 	self assert: botBody distanceToLeftObstacles <= bot maxAcceptableDistanceToTarget.
 	self assert: botBody distanceToRightObstacles <= bot maxAcceptableDistanceToTarget
 ]
@@ -47,6 +48,6 @@ SimpleTrackerWifiBotTest >> testGetCloseToTarget [
 	obstacleY := 300 - obstacle height - bot maxAcceptableDistanceToTarget - 20.
 	obstacle position: 300 @ obstacleY.
 	bot step.
-	self assert: botBody positionInArena x = 300.
+	self assert: botBody positionInArena x equals: 300.
 	self assert: botBody positionInArena y - obstacle bottom <= bot maxAcceptableDistanceToTarget
 ]

@@ -38,14 +38,14 @@ TwoWheeledWifiBot >> heading [
 
 { #category : #accessing }
 TwoWheeledWifiBot >> leftSpeed [
-	^(self rotationSpeed + (self forwardSpeed * 2))/2
+	^self forwardSpeed - (self rotationSpeed / 2)
 ]
 
 { #category : #stepping }
 TwoWheeledWifiBot >> leftSpeed: leftSpeed rightSpeed: rightSpeed [ 
 	self
 		forwardSpeed: (leftSpeed + rightSpeed) / 2;
-		rotationSpeed: (leftSpeed - rightSpeed).
+		rotationSpeed: (rightSpeed - leftSpeed).
 
 ]
 
@@ -76,5 +76,5 @@ TwoWheeledWifiBot >> maxRightLightIntensity [
 
 { #category : #accessing }
 TwoWheeledWifiBot >> rightSpeed [
-	^((self forwardSpeed * 2)- self rotationSpeed)/2
+	^self forwardSpeed + (self rotationSpeed / 2)
 ]

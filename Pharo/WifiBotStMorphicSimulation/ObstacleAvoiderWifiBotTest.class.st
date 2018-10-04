@@ -29,7 +29,7 @@ ObstacleAvoiderWifiBotTest >> testRotationToLeftOnRightObstacle [
 	self assert: botBody distanceToLeftObstacles equals: 150.
 	self assert: botBody distanceToRightObstacles < bot minDistanceToIgnoreObstacles.
 	bot step.
-	self assert: botBody heading < initialHeading
+	self assert: botBody heading > initialHeading
 ]
 
 { #category : #running }
