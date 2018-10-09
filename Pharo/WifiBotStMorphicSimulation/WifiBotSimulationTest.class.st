@@ -2,77 +2,79 @@ Class {
 	#name : #WifiBotSimulationTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'scenario'
+		'sim'
 	],
-	#category : #'WifiBotST-Kernel-Test'
+	#category : #'WifiBotStMorphicSimulation-Kernel-Test'
 }
 
 { #category : #'setUp-tearDown' }
 WifiBotSimulationTest >> setUp [ 
 	super setUp.
-	scenario := WifiBotSimulation new
+	sim := WifiBotSimulation new
 ]
 
 { #category : #'setUp-tearDown' }
 WifiBotSimulationTest >> tearDown [ 
 	super tearDown.
-	scenario stop; hide
+	sim stop; hide
 ]
 
 { #category : #testing }
 WifiBotSimulationTest >> testAdditionOfLightBulbs [ 
 	| bulb |
-	bulb := scenario addLightBulbAt: 100@100 color: Color green.
+	bulb := sim addLightBulbAt: 100@100 color: Color green.
 	self deny: bulb isNil.
-	self assert: scenario arena lightBulbs = {bulb} asSet
+	self assertCollection: sim arena lightBulbs hasSameElements: {bulb}
 	
 ]
 
 { #category : #testing }
 WifiBotSimulationTest >> testAdditionOfRobotGivenAClass [
 	| bot |
-	bot :=  scenario addRobotInstanceOf: ObstacleAvoiderWifiBot atPosition: 100@100.
+	bot :=  sim addRobotInstanceOf: ObstacleAvoiderWifiBot atPosition: 100@100.
 	self deny: bot isNil.
 	self assert: bot class == ObstacleAvoiderWifiBot.
-	self assert: scenario mission bots = {bot} asSet.
-	self assert: (scenario arena submorphs includes:  bot body morph owner).
-	self assert: (scenario robotInitialPositionsDict at: bot ) = (100@100)
+	self assertCollection: sim mission bots hasSameElements: {bot}.
+	self assert: (sim arena submorphs includes:  bot body morph owner).
+	self assert: (sim robotInitialPositionsDict at: bot) equals: (100@100)
 ]
 
 { #category : #testing }
 WifiBotSimulationTest >> testAdditionOfRobotGivenAnInstance [
 	| bot |
 	bot := ObstacleAvoiderWifiBot morphic.
-	scenario addRobot: bot atPosition: 100@100.
-	self assert: scenario mission bots = {bot} asSet.
-	self assert: (scenario arena submorphs includes:  bot body morph owner).
-	self assert: (scenario robotInitialPositionsDict at: bot ) = (100@100)	
+	sim addRobot: bot atPosition: 100@100.
+	self assertCollection: sim mission bots hasSameElements: {bot}.
+	self assert: (sim arena submorphs includes:  bot body morph owner).
+	self assert: (sim robotInitialPositionsDict at: bot ) equals: (100@100)	
 ]
 
 { #category : #testing }
 WifiBotSimulationTest >> testResetMovesRobotsToTheirInitialPositions [
 	| initialCenter bot |
-	scenario show.
+	sim show.
 	initialCenter := 300@300.
-	bot := scenario addRobotInstanceOf: ObstacleAvoiderWifiBot  atPosition: 300@300.
+	bot := sim addRobotInstanceOf: ObstacleAvoiderWifiBot  atPosition: 300@300.
 	bot forwardSpeed: 100.
 	self assert: bot body morph centerInArena equals: initialCenter.
-	scenario start.
+	sim start.
 	(Delay forMilliseconds: 300) wait.
-	scenario stop.
+	sim stop.
 	self deny: bot body morph centerInArena equals: initialCenter.
-	scenario reset.
+	sim window position: sim window position + 200.
+	sim reset.
 	self assert: bot body morph centerInArena equals: initialCenter.
+	self assert: bot body morph heading equals: 0.
 	
 
 ]
 
 { #category : #testing }
 WifiBotSimulationTest >> testStartStop [
-	self deny: scenario mission isRunning.
-	scenario start.
-	self assert: scenario mission isRunning.
-	scenario stop.
-	self deny: scenario mission isRunning.
+	self deny: sim mission isRunning.
+	sim start.
+	self assert: sim mission isRunning.
+	sim stop.
+	self deny: sim mission isRunning.
 
 ]

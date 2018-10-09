@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'stepCount'
 	],
-	#category : #'WifiBotST-Kernel-Test'
+	#category : #'WifiBotStMorphicSimulation-Kernel-Test'
 }
 
 { #category : #'initialize-release' }

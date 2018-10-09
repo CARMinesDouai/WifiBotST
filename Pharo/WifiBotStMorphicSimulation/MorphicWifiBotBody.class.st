@@ -291,7 +291,7 @@ MorphicWifiBotBody >> toggleShowDelete [
 
 { #category : #private }
 MorphicWifiBotBody >> updateLastCenter [
-	self lastCenter: self morph owner center.
+	self lastCenter: self morph centerInArena.
 	rotationOnly := true
 ]
 

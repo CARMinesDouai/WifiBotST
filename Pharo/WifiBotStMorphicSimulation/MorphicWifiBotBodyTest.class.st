@@ -29,8 +29,8 @@ MorphicWifiBotBodyTest >> setUp [
 	arena := Morph new.
 	arena
 		color: Color yellow;
-		width: World width;
-		height: World height.
+		width: World width//2;
+		height: World height//2.
 	arena openInWorld.
 	obstacle := ObstacleMorph new.
 	self openBotBodyInArena.
@@ -61,6 +61,7 @@ MorphicWifiBotBodyTest >> testCenter [
 	| expectedCenter |
 	expectedCenter := 100 @ 100.
 	botBody centerInArena: expectedCenter.
+	arena position: arena position + 100.
 	self assert: botBody centerInArena equals: expectedCenter
 ]
 

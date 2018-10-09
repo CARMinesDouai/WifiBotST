@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'missionThread'
 	],
-	#category : #'WifiBotST-Kernel-Test'
+	#category : #'WifiBotStMorphicSimulation-Kernel-Test'
 }
 
 { #category : #'setUp-tearDown' }

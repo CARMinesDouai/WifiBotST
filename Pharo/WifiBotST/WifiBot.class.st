@@ -15,16 +15,6 @@ WifiBot class >> bodyIp: ipAddressArray [
 ]
 
 { #category : #'instance creation' }
-WifiBot class >> morphic [
-	^ self on: self morphicBodyClass new
-]
-
-{ #category : #'instance creation' }
-WifiBot class >> morphicBodyClass [
-	^MorphicWifiBotBody 
-]
-
-{ #category : #'instance creation' }
 WifiBot class >> on: aWifiBotBody [
 	^self new
 		body: aWifiBotBody;

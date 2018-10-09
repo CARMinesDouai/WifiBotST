@@ -12,17 +12,6 @@ WifiBotTransformationMorph >> boundingBoxVisible: aBool [
 	isBoundingBoxVisible := aBool
 ]
 
-{ #category : #accessing }
-WifiBotTransformationMorph >> center [
-	"Hack !
-	The center of the transformMorph is the center of the icon of the bot and not the real center of the transformMorph 
-	"
-	(self hasSubmorphs and: [ self submorphs first isKindOf: WifiBotMorph ]) ifTrue: [
-		^ (transform localBoundsToGlobal: self submorphs first bounds) center
-	].
-	^ super center
-]
-
 { #category : #geometry }
 WifiBotTransformationMorph >> computeBounds [
 	(self hasSubmorphs and: [ self submorphs first isKindOf: WifiBotMorph ]) ifTrue: [

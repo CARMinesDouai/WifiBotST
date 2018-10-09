@@ -10,6 +10,18 @@ MorphicWifiBotBodyDisplayingTest >> openBotBodyInArena [
 ]
 
 { #category : #running }
+MorphicWifiBotBodyDisplayingTest >> testCenter [
+	| expectedCenterInArena |
+	botBody openIn: arena.
+	expectedCenterInArena := arena extent // 2.
+	botBody centerInArena: expectedCenterInArena.
+	arena position: arena position + 100.
+	self assert: botBody centerInArena equals: expectedCenterInArena.
+	self assert: botBody morph centerInArena equals: expectedCenterInArena.
+
+]
+
+{ #category : #running }
 MorphicWifiBotBodyDisplayingTest >> testExtraTransformMorphCreatedWhenOpenningInHand [
 	| expectedArenaTransformMorphs originalAreanTransformMorphs actualArenaTransformMorphs expectedWorldTransformMorphs actualWorldTransformMorphs |
 	expectedWorldTransformMorphs := (World submorphs
@@ -20,7 +32,7 @@ MorphicWifiBotBodyDisplayingTest >> testExtraTransformMorphCreatedWhenOpenningIn
 	botBody openIn: arena.
 	actualWorldTransformMorphs := (World submorphs
 				select: [:morph | morph isKindOf: TransformMorph]) asSet.
-	self assert: expectedWorldTransformMorphs = actualWorldTransformMorphs.
+	self assertCollection: expectedWorldTransformMorphs hasSameElements: actualWorldTransformMorphs.
 	actualArenaTransformMorphs := (arena submorphs
 				select: [:morph | morph isKindOf: TransformMorph]) asSet.
 	expectedArenaTransformMorphs := originalAreanTransformMorphs copyWith: botBody morph owner.
@@ -33,6 +45,16 @@ MorphicWifiBotBodyDisplayingTest >> testObstacleDetectionWhenOpenningInHand [
 	botBody openInHand.
 	botBody openIn: arena.
 	self testNearObstacleSensing 
+]
+
+{ #category : #running }
+MorphicWifiBotBodyDisplayingTest >> testSensorPositions [
+	botBody openIn: arena.
+	botBody positionInArena: 300@200.
+	arena position: arena position + 100.
+	self assert: botBody leftObstacleSensor position equals: 0 @ -150.
+	self assert: botBody rightObstacleSensor position equals: 49 @ -150.
+
 ]
 
 { #category : #running }

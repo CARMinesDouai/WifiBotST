@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'resetCount'
 	],
-	#category : #'WifiBotST-Kernel-Test'
+	#category : #'WifiBotStMorphicSimulation-Kernel-Test'
 }
 
 { #category : #'initialize-release' }
